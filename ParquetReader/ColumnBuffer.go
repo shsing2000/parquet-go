@@ -196,6 +196,10 @@ func (self *ColumnBufferType) SkipRows(num int64) int64 {
 		}
 	}
 
+	if self.DataTable == nil {
+		return 0
+	}
+
 	self.DataTable.Pop(num)
 	self.DataTableNumRows -= num
 	if self.DataTableNumRows <= 0 {
