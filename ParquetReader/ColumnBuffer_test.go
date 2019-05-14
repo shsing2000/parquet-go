@@ -21,7 +21,7 @@ func TestNewColumnBuffer(t *testing.T) {
 	if err != nil {
 		t.Errorf("expected schema error to be nil but got %s", err.Error())
 	}
-	// spew.Dump(schemaHandler)
+
 	var path string
 	for i, elem := range schemaHandler.SchemaElements {
 		if elem.Name == "Value" {
