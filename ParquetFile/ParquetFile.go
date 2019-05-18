@@ -1,6 +1,6 @@
 package ParquetFile
 
-//go:generate mockgen -destination=../mocks/mock_parquetfile.go -package=mocks -source=ParquetFile.go ParquetFile
+//go:generate mockgen -destination=mock_parquetfile.go -package=ParquetFile -source=ParquetFile.go
 
 import (
 	"io"

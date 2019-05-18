@@ -197,6 +197,10 @@ func (self *ColumnBufferType) SkipRows(num int64) int64 {
 	}
 
 	if self.DataTable == nil {
+		index := self.SchemaHandler.MapIndex[self.PathStr]
+		self.DataTable = Layout.NewEmptyTable()
+		self.DataTable.Type = self.SchemaHandler.SchemaElements[index].GetType()
+		self.DataTable.Path = Common.StrToPath(self.PathStr)
 		return 0
 	}
 

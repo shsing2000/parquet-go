@@ -82,7 +82,7 @@ func TestReadBodyLargerThanProvidedBuffer(t *testing.T) {
 
 	buf := bytes.NewBufferString("some body data that is larger than expected")
 	bufReadCloser := ioutil.NopCloser(buf)
-	mockClient := mocks.NewMockS3API(ctrl)
+	mockClient := NewMockS3API(ctrl)
 	mockClient.EXPECT().GetObjectWithContext(gomock.Any(), gomock.Any(), gomock.Any()).
 		DoAndReturn(func(ctx context.Context, input *s3.GetObjectInput, opts ...request.Option) (*s3.GetObjectOutput, error) {
 			return &s3.GetObjectOutput{Body: bufReadCloser}, nil
@@ -111,7 +111,7 @@ func TestReadDownloadError(t *testing.T) {
 	errMessage := "some download error"
 	buf := bytes.NewBufferString("some data")
 	bufReadCloser := ioutil.NopCloser(buf)
-	mockClient := mocks.NewMockS3API(ctrl)
+	mockClient := NewMockS3API(ctrl)
 	mockClient.EXPECT().GetObjectWithContext(gomock.Any(), gomock.Any(), gomock.Any()).
 		DoAndReturn(func(ctx context.Context, input *s3.GetObjectInput, opts ...request.Option) (*s3.GetObjectOutput, error) {
 			return &s3.GetObjectOutput{Body: bufReadCloser}, errors.New(errMessage)
@@ -140,7 +140,7 @@ func TestRead(t *testing.T) {
 	data := "some data"
 	buf := bytes.NewBufferString(data)
 	bufReadCloser := ioutil.NopCloser(buf)
-	mockClient := mocks.NewMockS3API(ctrl)
+	mockClient := NewMockS3API(ctrl)
 	mockClient.EXPECT().GetObjectWithContext(gomock.Any(), gomock.Any(), gomock.Any()).
 		DoAndReturn(func(ctx context.Context, input *s3.GetObjectInput, opts ...request.Option) (*s3.GetObjectOutput, error) {
 			return &s3.GetObjectOutput{Body: bufReadCloser}, nil
@@ -198,7 +198,7 @@ func TestWrite(t *testing.T) {
 		t.Error("unable to create mock S3 client http request")
 	}
 
-	mockClient := mocks.NewMockS3API(ctrl)
+	mockClient := NewMockS3API(ctrl)
 	mockClient.EXPECT().PutObjectRequest(gomock.Any()).
 		Return(
 			&request.Request{HTTPRequest: req}, &s3.PutObjectOutput{})
@@ -270,7 +270,7 @@ func TestOpen(t *testing.T) {
 	key := "test/foobar.parquet"
 	fileSize := int64(123)
 
-	mockClient := mocks.NewMockS3API(ctrl)
+	mockClient := NewMockS3API(ctrl)
 	mockClient.EXPECT().HeadObject(gomock.Any()).
 		Return(&s3.HeadObjectOutput{ContentLength: aws.Int64(fileSize)}, nil)
 	s := &S3File{
@@ -318,7 +318,7 @@ func TestCreate(t *testing.T) {
 	if err != nil {
 		t.Error("unable to create mock S3 client http request")
 	}
-	mockClient := mocks.NewMockS3API(ctrl)
+	mockClient := NewMockS3API(ctrl)
 	mockClient.EXPECT().PutObjectRequest(gomock.Any()).
 		Return(
 			&request.Request{HTTPRequest: req}, &s3.PutObjectOutput{})
@@ -375,7 +375,7 @@ func TestOpenWriteUploadFailuresPreventFurtherWrites(t *testing.T) {
 	if err != nil {
 		t.Error("unable to create mock S3 client http request")
 	}
-	mockClient := mocks.NewMockS3API(ctrl)
+	mockClient := NewMockS3API(ctrl)
 	mockClient.EXPECT().PutObjectRequest(gomock.Any()).
 		Return(
 			&request.Request{
@@ -428,7 +428,7 @@ func TestOpenReadFileSizeError(t *testing.T) {
 	bucket := "test-bucket"
 	key := "test/foobar.parquet"
 
-	mockClient := mocks.NewMockS3API(ctrl)
+	mockClient := NewMockS3API(ctrl)
 	mockClient.EXPECT().HeadObject(gomock.Any()).
 		DoAndReturn(func(hoi *s3.HeadObjectInput) (*s3.HeadObjectOutput, error) {
 			if *hoi.Bucket != bucket {
@@ -462,7 +462,7 @@ func TestOpenRead(t *testing.T) {
 	key := "test/foobar.parquet"
 	filesize := int64(123)
 
-	mockClient := mocks.NewMockS3API(ctrl)
+	mockClient := NewMockS3API(ctrl)
 	mockClient.EXPECT().HeadObject(gomock.Any()).
 		DoAndReturn(func(hoi *s3.HeadObjectInput) (*s3.HeadObjectOutput, error) {
 			if *hoi.Bucket != bucket {

@@ -1,6 +1,6 @@
 package ParquetFile
 
-//go:generate mockgen -destination=../mocks/mock_s3.go -package=mocks github.com/aws/aws-sdk-go/service/s3/s3iface S3API
+//go:generate mockgen -destination=mock_s3.go -package=ParquetFile github.com/aws/aws-sdk-go/service/s3/s3iface S3API
 
 import (
 	"context"
