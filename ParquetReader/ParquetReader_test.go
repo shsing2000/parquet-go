@@ -10,8 +10,8 @@ import (
 
 	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/golang/mock/gomock"
+	"github.com/xitongsys/parquet-go/ParquetFile"
 	"github.com/xitongsys/parquet-go/SchemaHandler"
-	"github.com/xitongsys/parquet-go/mocks"
 	"github.com/xitongsys/parquet-go/parquet"
 )
 
@@ -55,7 +55,7 @@ func TestNewParquetReader(t *testing.T) {
 		}
 	}
 
-	mockPF := mocks.NewMockParquetFile(ctrl)
+	mockPF := ParquetFile.NewMockParquetFile(ctrl)
 	gomock.InOrder(
 		mockPF.EXPECT().Seek(int64(-8), io.SeekEnd).Return(int64(0), nil),
 		mockPF.EXPECT().Read(gomock.Any()).DoAndReturn(func(buf []byte) (int, error) {
@@ -95,7 +95,7 @@ func TestNewParquetReaderSeekFailure(t *testing.T) {
 	defer ctrl.Finish()
 
 	errMessage := "some seek failure"
-	mockPF := mocks.NewMockParquetFile(ctrl)
+	mockPF := ParquetFile.NewMockParquetFile(ctrl)
 	mockPF.EXPECT().Seek(int64(-8), io.SeekEnd).Return(int64(0), errors.New(errMessage))
 
 	reader, err := NewParquetReader(mockPF, new(example), 1)
@@ -113,7 +113,7 @@ func TestNewParquetReaderMetadataError(t *testing.T) {
 	defer ctrl.Finish()
 
 	errMessage := "some read error"
-	mockPF := mocks.NewMockParquetFile(ctrl)
+	mockPF := ParquetFile.NewMockParquetFile(ctrl)
 	gomock.InOrder(
 		mockPF.EXPECT().Seek(int64(-8), io.SeekEnd).Return(int64(0), nil),
 		mockPF.EXPECT().Read(gomock.Any()).DoAndReturn(func(buf []byte) (int, error) {

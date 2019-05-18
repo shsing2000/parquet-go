@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/CrowdStrike/gomock/gomock"
+	"github.com/golang/mock/gomock"
 	"github.com/xitongsys/parquet-go/ParquetFile"
 	"github.com/xitongsys/parquet-go/SchemaHandler"
 	"github.com/xitongsys/parquet-go/parquet"
